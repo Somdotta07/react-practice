@@ -3,26 +3,23 @@ import axios from 'axios';
 
 export default function User() {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            try {
-                const { data: response } = await axios.get('https://61ffea755e1c4100174f701b.mockapi.io/api/v1/users');
-                setData(response);
-            } catch (error) {
-                console.error(error.message);
-            }
+            const response = await axios('https://swapi.dev/api/people');
+            
+            setData(response.data);
             setLoading(false);
         }
         fetchData();
     }, []);
 
-    const removeName = (id) => {
-        const newlist = data.filter((item) => item.id !== id);
-        setData(newlist);
-    }
+    // const removeName = (id) => {
+    //     const newlist = data.filter((item) => item.id !== id);
+    //     setData(newlist);
+    // }
 
     return (<div>
         {
@@ -33,8 +30,8 @@ export default function User() {
                 <h2>Users</h2>
                 <ul>
                     {
-                        data.map(item => (<li key = {item.id}>{item.name}
-                        <button onClick={() =>removeName(item.id)}>Remove</button></li>))
+                        data.forEach(item => (<li key = {item.count}>{item.results.name}
+                        </li>)) 
                     }
                
                     </ul>
